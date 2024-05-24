@@ -6,12 +6,16 @@ import (
 	fssz "github.com/ferranbt/fastssz"
 )
 
-var _ fssz.HashRoot = (Domain)([]byte{})
+var _ fssz.HashRoot = (Domain)(nil)
 var _ fssz.Marshaler = (*Domain)(nil)
 var _ fssz.Unmarshaler = (*Domain)(nil)
 
 // Domain represents a 32 bytes domain object in Ethereum beacon chain consensus.
 type Domain []byte
+
+func (s Domain) GetTree() (*fssz.Node, error) {
+	panic("not implemented")
+}
 
 // HashTreeRoot returns calculated hash root.
 func (e Domain) HashTreeRoot() ([32]byte, error) {
@@ -19,7 +23,7 @@ func (e Domain) HashTreeRoot() ([32]byte, error) {
 }
 
 // HashTreeRootWith hashes a Domain object with a Hasher from the default HasherPool.
-func (e Domain) HashTreeRootWith(hh *fssz.Hasher) error {
+func (e Domain) HashTreeRootWith(hh fssz.HashWalker) error {
 	hh.PutBytes(e[:])
 	return nil
 }

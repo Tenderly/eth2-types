@@ -7,9 +7,9 @@ import (
 	fssz "github.com/ferranbt/fastssz"
 )
 
-var _ fssz.HashRoot = (Epoch)(0)
-var _ fssz.Marshaler = (*Epoch)(nil)
-var _ fssz.Unmarshaler = (*Epoch)(nil)
+var _ fssz.HashRoot = (*SSZUint64)(nil)
+var _ fssz.Marshaler = (*SSZUint64)(nil)
+var _ fssz.Unmarshaler = (*SSZUint64)(nil)
 
 // SSZUint64 is a uint64 type that satisfies the fast-ssz interface.
 type SSZUint64 uint64
@@ -43,6 +43,10 @@ func (s *SSZUint64) UnmarshalSSZ(buf []byte) error {
 	return nil
 }
 
+func (s SSZUint64) GetTree() (*fssz.Node, error) {
+	panic("not implemented")
+}
+
 // HashTreeRoot returns calculated hash root.
 func (s *SSZUint64) HashTreeRoot() ([32]byte, error) {
 	buf := make([]byte, 8)
@@ -53,7 +57,7 @@ func (s *SSZUint64) HashTreeRoot() ([32]byte, error) {
 }
 
 // HashWithDefaultHasher hashes a HashRoot object with a Hasher from the default HasherPool.
-func (s *SSZUint64) HashTreeRootWith(hh *fssz.Hasher) error {
+func (s *SSZUint64) HashTreeRootWith(hh fssz.HashWalker) error {
 	indx := hh.Index()
 	hh.PutUint64(uint64(*s))
 	hh.Merkleize(indx)

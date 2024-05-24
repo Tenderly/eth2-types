@@ -13,13 +13,17 @@ var _ fssz.Unmarshaler = (*CommitteeIndex)(nil)
 // CommitteeIndex in eth2.
 type CommitteeIndex uint64
 
+func (s CommitteeIndex) GetTree() (*fssz.Node, error) {
+	panic("not implemented")
+}
+
 // HashTreeRoot returns calculated hash root.
 func (c CommitteeIndex) HashTreeRoot() ([32]byte, error) {
 	return fssz.HashWithDefaultHasher(c)
 }
 
 // HashWithDefaultHasher hashes a HashRoot object with a Hasher from the default HasherPool.
-func (c CommitteeIndex) HashTreeRootWith(hh *fssz.Hasher) error {
+func (c CommitteeIndex) HashTreeRootWith(hh fssz.HashWalker) error {
 	hh.PutUint64(uint64(c))
 	return nil
 }

@@ -110,13 +110,17 @@ func (e Epoch) SafeMod(x uint64) (Epoch, error) {
 	return Epoch(res), err
 }
 
+func (s Epoch) GetTree() (*fssz.Node, error) {
+	panic("not implemented")
+}
+
 // HashTreeRoot returns calculated hash root.
 func (e Epoch) HashTreeRoot() ([32]byte, error) {
 	return fssz.HashWithDefaultHasher(e)
 }
 
 // HashWithDefaultHasher hashes a HashRoot object with a Hasher from the default HasherPool.
-func (e Epoch) HashTreeRootWith(hh *fssz.Hasher) error {
+func (e Epoch) HashTreeRootWith(hh fssz.HashWalker) error {
 	hh.PutUint64(uint64(e))
 	return nil
 }

@@ -158,13 +158,17 @@ func (s Slot) SafeModSlot(x Slot) (Slot, error) {
 	return s.SafeMod(uint64(x))
 }
 
+func (s Slot) GetTree() (*fssz.Node, error) {
+	panic("not implemented")
+}
+
 // HashTreeRoot returns calculated hash root.
 func (s Slot) HashTreeRoot() ([32]byte, error) {
 	return fssz.HashWithDefaultHasher(s)
 }
 
 // HashWithDefaultHasher hashes a HashRoot object with a Hasher from the default HasherPool.
-func (s Slot) HashTreeRootWith(hh *fssz.Hasher) error {
+func (s Slot) HashTreeRootWith(hh fssz.HashWalker) error {
 	hh.PutUint64(uint64(s))
 	return nil
 }

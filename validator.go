@@ -6,7 +6,7 @@ import (
 	fssz "github.com/ferranbt/fastssz"
 )
 
-var _ fssz.HashRoot = (ValidatorIndex)(0)
+var _ fssz.HashRoot = (*ValidatorIndex)(nil)
 var _ fssz.Marshaler = (*ValidatorIndex)(nil)
 var _ fssz.Unmarshaler = (*ValidatorIndex)(nil)
 
@@ -39,13 +39,17 @@ func (v ValidatorIndex) Mod(x uint64) ValidatorIndex {
 	return ValidatorIndex(uint64(v) % x)
 }
 
+func (s ValidatorIndex) GetTree() (*fssz.Node, error) {
+	panic("not implemented")
+}
+
 // HashTreeRoot returns calculated hash root.
 func (v ValidatorIndex) HashTreeRoot() ([32]byte, error) {
 	return fssz.HashWithDefaultHasher(v)
 }
 
 // HashWithDefaultHasher hashes a HashRoot object with a Hasher from the default HasherPool.
-func (v ValidatorIndex) HashTreeRootWith(hh *fssz.Hasher) error {
+func (v ValidatorIndex) HashTreeRootWith(hh fssz.HashWalker) error {
 	hh.PutUint64(uint64(v))
 	return nil
 }
